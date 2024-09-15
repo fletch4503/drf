@@ -1,0 +1,42 @@
+check venv!
+cd drfsite
+pip install -r requirements.txt
+pip freeze > requirements.txt
+
+pip install django
+django-admin startproject drfsite
+python manage.py migrate
+python manage.py makemigrations
+python manage.py createsuperuser
+
+
+django-admin startproject todo_manager
+python manage.py runserver
+python manage.py createsuperuser    # fletch4503@mail.ru
+
+python manage.py startapp todo_list - создать приложение, ews_list - для работы с почтой, pwp_list - с проектами
+python manage.py showmigrations     - Показать все миграции
+python manage.py makemigrations     - внести изменения/создать миграцию
+python manage.py migrate            - Применить миграцию
+
+Порядок команд после внесения изменений в модель:
+Step 1: Delete the db.sqlite3 file.
+Step 2 : $ python manage.py migrate
+Step 3 : $ python manage.py makemigrations
+Step 4: Create the super user using $ python manage.py createsuperuser
+new db.sqlite3 will generates automatically
+
+git remote
+git remote remove origin
+git remote add origin https://github.com/fletch4503/pwp_FastAPI.git     - add remote git
+docker compose up -d pg                                                 - Install pg db in Docker
+docker compose ps                                                       - check state Docker
+poetry install                                                      - install packages in order to pyproject.toml file
+python -m venv .venv                                                 - install virtual env
+alembic init -t async alembic                                       - initiate alembic dir and setting it up
+alembic revision --autogenerate -m "Create User Table"              - create  db migration
+alembic revision --autogenerate -m "Create access_tokens table"
+alembic upgrade head                                                - apply migration head
+uvicorn app.main:app --reload                                       - run application
+cd fastapi-application
+python -c 'import secrets; print(secrets.token_hex())'              - generate tokens by python
