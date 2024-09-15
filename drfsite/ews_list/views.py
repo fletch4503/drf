@@ -1,4 +1,6 @@
 # from django.shortcuts import render
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import render
 from rest_framework import generics
 # CreateAPIView – создание данных по POST-запросу;
 # ListAPIView – чтение списка данных по GET-запросу;
@@ -15,6 +17,20 @@ from .models import ewsitem
 # from django.forms.models import model_to_dict
 from .serializers import ewsitemSerializer
 
+
+# Здесь определяем Functional Based View
+def index_view(request: HttpRequest) -> HttpResponse:  # Описываем действия
+    # def index_view(request: HttpRequest, pk) -> HttpResponse:  # Описываем действия для Functional view
+    # conf_logging(level=logging.DEBUG)
+    ews_items = ewsitem.objects.all()[:3]  # свойство objects есть в БД сортировкой по id. Выводим 3 элемента
+    # ews_items = ewsitem.objects.get(pk=pk)  # действия для Functional view -> если не нашли - делаем, исключение
+    # ews_items = ewsitem.objects.order_by("id").all()  # свойство objects есть в БД сортировкой по id
+
+    return render(
+        request,
+        template_name="ews_list/index.html",
+        context={"ews_items": ews_items},  # Обращение в БД за всеми элементами
+    )
 
 # класс, по которому возвращается список записей в JSON-формате
 class ewsAPIList(generics. ListCreateAPIView):

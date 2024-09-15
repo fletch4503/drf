@@ -6,7 +6,7 @@ The `urlpatterns` list routes URLs to views. For more information please see:
 Examples:
 Function views
     1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+    2. Add a URL to urlpatterns:  path('', views. home, name='home')
 Class-based views
     1. Add an import:  from other_app.views import Home
     2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
@@ -16,13 +16,18 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.views.generic import TemplateView
 
 from ews_list.views import *
 from women.views import *
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path("", TemplateView.as_view(template_name="index.html"), name="index"),  # Class-based views
+    path("about/", TemplateView.as_view(template_name="about.html"), name="About"),
+    path('admin/', admin.site.urls),
+    path('women/', include("women.urls")),
+    path("ews/", include("ews_list.urls")),  # Including EWS URLconf
     # path('api/v1/womenlist/', WomenAPIView.as_view()),
     path('api/v1/womenlist/', WomenAPIList.as_view()),
     path('api/v1/ewslist/', ewsAPIList.as_view()),

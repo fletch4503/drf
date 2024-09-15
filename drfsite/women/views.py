@@ -1,4 +1,5 @@
 # from django.shortcuts import render
+from django.http import HttpResponse
 from rest_framework import generics
 # CreateAPIView – создание данных по POST-запросу;
 # ListAPIView – чтение списка данных по GET-запросу;
@@ -15,6 +16,9 @@ from .models import Women
 # from django.forms.models import model_to_dict
 from .serializers import WomenSerializer
 
+
+def women_index(request):
+    return HttpResponse("Страница приложения women.")
 
 # класс, по которому возвращается список записей в JSON-формате
 class WomenAPIList(generics. ListCreateAPIView):

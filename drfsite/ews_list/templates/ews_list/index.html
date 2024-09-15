@@ -1,0 +1,17 @@
+{% extends "ews_list/base.html" %}
+
+{% block title %}
+  EWS List App
+{% endblock  %}
+
+{% block body %}
+  <h1>EWS List Приложение</h1>
+  <ul>
+    <li><a href="{% url 'ews_list:list' %}">All EWS items</a></li>
+    <li><a href="{% url 'ews_list:done' %}">Done EWS items</a></li>
+    <li><a href="{% url 'ews_list:add' %}">Add EWS item</a></li>
+  </ul>
+
+  <h2>Exchange Web Services (EWS):</h2>
+  {% include 'ews_list/components/ews_items_list.html' %}
+{% endblock body %}

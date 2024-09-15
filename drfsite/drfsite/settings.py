@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     'women.apps.WomenConfig',
-    'ewsitem.apps.EwsListConfig',
+    'ews_list.apps.EwsListConfig',
     'rest_framework',
 ]
 
@@ -57,7 +57,7 @@ ROOT_URLCONF = "drfsite.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / 'templates'],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
