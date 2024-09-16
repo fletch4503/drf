@@ -6,9 +6,10 @@
 
 {% block body %}
   <h1>EWS List Приложение</h1>
+  {% comment %}  <p>Вывод списка женщин списком в шаблон Django</p> {% endcomment %}
   <ul>
     <li><a href="{% url 'ews_list:list' %}">All EWS items</a></li>
-    <li><a href="{% url 'ews_list:done' %}">Done EWS items</a></li>
+    {% comment %}  <li><a href="{% url 'ews_list:done' %}">Done EWS items</a></li> {% endcomment %}
     <li><a href="{% url 'ews_list:add' %}">Add EWS item</a></li>
   </ul>
 

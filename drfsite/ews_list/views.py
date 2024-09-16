@@ -1,6 +1,7 @@
 # from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
+from django.views.generic import CreateView, ListView, DetailView
 from rest_framework import generics
 # CreateAPIView – создание данных по POST-запросу;
 # ListAPIView – чтение списка данных по GET-запросу;
@@ -31,6 +32,39 @@ def index_view(request: HttpRequest) -> HttpResponse:  # Описываем де
         template_name="ews_list/index.html",
         context={"ews_items": ews_items},  # Обращение в БД за всеми элементами
     )
+
+
+# Вид на основе классов - класс создания элемента
+class ewsitemCreate(CreateView):
+    model = ewsitem
+    fields = [
+        "email_title",
+        "sender",
+        "done",
+        "cat",
+    ]
+
+
+class ewsitemList(ListView):
+    model = ewsitem
+
+
+class ewsitemListIndexView(ListView):
+    model = ewsitem
+    template_name = "ews_list/index.html"
+    queryset = ewsitem.objects.all()[:3]
+
+
+class ewsitemDetailView(DetailView):
+    model = ewsitem
+
+    # override context data
+    def get_context_data(self, *args, **kwargs):
+        context = super(ewsitemDetailView,
+                        self).get_context_data(*args, **kwargs)
+        # add extra field
+        context["category"] = "cat_id"
+        return context
 
 
 # класс, по которому возвращается список записей в JSON-формате
@@ -75,3 +109,11 @@ class ewsAPIView(APIView):  # - отображение на основе кла�
         serializer.save()
 
         return Response({"post": serializer.data})
+
+
+def about(request):
+    return render(
+        request,
+        template_name="about.html",
+    )
+
