@@ -1,7 +1,7 @@
 # from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
-from django.views.generic import CreateView, ListView, DetailView
+from django.views.generic import CreateView, ListView, DetailView, FormView
 from rest_framework import generics
 # CreateAPIView – создание данных по POST-запросу;
 # ListAPIView – чтение списка данных по GET-запросу;
@@ -65,6 +65,20 @@ class ewsitemDetailView(DetailView):
         # add extra field
         context["category"] = "cat_id"
         return context
+
+
+
+class ewsitemFormView(FormView):
+    # specify the Form you want to use
+    form_class = ewsitemForm
+     
+    # specify name of template
+    template_name = "ews_list / ewsitem_form.html"
+ 
+    # can specify success url
+    # url to redirect after successfully
+    # updating details
+    success_url ="/thanks/
 
 
 # класс, по которому возвращается список записей в JSON-формате
