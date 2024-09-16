@@ -5,11 +5,24 @@
 {% endblock  %}
 
 {% block body %}
+
   <h1>Women List Приложение</h1>
   <ul>
+    {% comment %}  <p>Вывод списка женщин списком в шаблон Django</p> {% endcomment %}
     <li><a href="{% url 'women:list' %}">All Women</a></li>
+    {% comment %} <li><a href="{% url 'women:add' %}">Add Women</a></li> {% endcomment %}
   </ul>
 
   <h2>Womens:</h2>
   {% include 'women/components/women_list.html' %}
+
+  <h2>Add Woman:</h2>
+  <form method="post" action="postwoman/">
+      {% csrf_token %}
+      <p>title:<br> <input name="title" /></p>
+      <p>content:<br> <input name="content" /></p>
+      <p>published:<br> <input name="is_published" type="checkbox" /></p>
+      <input type="submit" value="Send" />
+  </form>
+
 {% endblock body %}

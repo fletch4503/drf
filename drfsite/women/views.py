@@ -2,7 +2,7 @@ from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render
 from django.views.generic import (
     ListView,
-    DetailView,
+    DetailView, CreateView,
 )
 from rest_framework import generics
 # CreateAPIView – создание данных по POST-запросу;
@@ -27,10 +27,52 @@ def women_index(request: HttpRequest) -> HttpResponse:  # Описываем д�
     w_items = Women.objects.all()[:3]
     return render(
         request,
-        template_name="women/index.html",
-        context={"women": w_items},  # Обращение в БД за всеми элементами
+        template_name="index.html",
+        # template_name="women/index.html",
+        context={"women": w_items},  # Передача объектов классов --> Обращение в БД за всеми элементами
     )
     # return HttpResponse("Страница приложения women.")
+
+
+def postwoman(request: HttpRequest) -> HttpResponse:  # Функция для отправки данных в форму
+    # получаем из данных запроса POST отправленные через форму данные
+    title = request.POST.get("title", "Undefined")
+    content = request.POST.get("content", "Undefined")
+    is_published = request.POST.get("is_published", 0)
+    # return render(
+    #     request,
+    #     template_name="woman/woman_add.html",
+    #     # template_name="women/index.html",
+    #     context={"title": title, "content": content, "published": is_published},
+    #     # Передача объектов классов --> Обращение в БД за всеми элементами
+    # )
+    return HttpResponse(f"<h2>title: {title}  content: {content}  published: {is_published}</h2>")
+
+
+def about(request):
+    return render(
+        request,
+        template_name="about.html",
+    )
+
+
+def actress(request):
+    return HttpResponse(f"Актриса")
+
+
+def comments(request):
+    # def comments(request, id):
+    #     return HttpResponse(f"Комментарии об актрисе {request.data['cat_id']}")
+    return HttpResponse(f"Комментарии об актрисе")
+
+
+def top(request):
+    return HttpResponse("Наиболее популярные актрисы")
+
+
+class CreateWomenView(CreateView):  # ListView - готовые объекты для отображения из django.views.generic
+    model = Women
+    fields = '__all__'
 
 
 class WomenListView(ListView):  # ListView - готовые объекты для отображения из django.views.generic
@@ -46,14 +88,14 @@ class WomenListIndexView(ListView):  # делаем свой класс на о�
     queryset = Women.objects.all()
 
 
-# класс, по которому возвращается список записей в JSON-формате по REST_FRAMEWORK
+# КЛАСС, по которому возвращается список записей в JSON-формате по REST_FRAMEWORK
 class WomenAPIList(generics.ListCreateAPIView):
     queryset = Women.objects.all()
     serializer_class = WomenSerializer
 
 
-# класс для отображения содержимого БД или внесения изменений в БД по REST_FRAMEWORK
-class WomenAPIView(APIView):  # отображение на основе классов по REST_FRAMEWORK!!!
+# КЛАСС для отображения содержимого БД или внесения изменений в БД по REST_FRAMEWORK
+class WomenAPIView(APIView):  # отображение на основе КЛАССОВ по REST_FRAMEWORK!!!
 
     def get(self, request):
         w = Women.objects.all()
