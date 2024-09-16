@@ -1,0 +1,16 @@
+{% extends "women/base.html" %}
+
+{% block title %}
+  ToDo #{{ object.pk }}
+{% endblock  %}
+
+{% block body %}
+  <h3>Women:</h3>
+  <div>
+    <div>Title: <strong>{{ object.title }}</strong></div>
+    <div>Content: <strong>{{ object.content }}</strong></div>
+    <div>Publsihed: <strong>{{ object.is_published }}</strong></div>
+    <div>Category: <strong>{{ object.cat }}</strong></div>
+  </div>
+  <br>
+{% endblock body %}

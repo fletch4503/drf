@@ -7,10 +7,9 @@
 {% block body %}
   <h1>Women List Приложение</h1>
   <ul>
-    <li><a href="{% url 'women:list' %}">All Todo items</a></li>
-    <li><a href="{% url 'women:done' %}">Done todo items</a></li>
+    <li><a href="{% url 'women:list' %}">All Women</a></li>
   </ul>
 
-  <h2>ToDos:</h2>
+  <h2>Womens:</h2>
   {% include 'women/components/women_list.html' %}
 {% endblock body %}

@@ -11,6 +11,7 @@ class WomenModel:
         self.title = title
         self.content = content
 
+
 class WomenSerializer(serializers.ModelSerializer):
     class Meta:
         model = Women

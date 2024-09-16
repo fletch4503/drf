@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 class ewsitem(models.Model):
     # Класс для работы с Exchange-сервером
@@ -13,6 +14,7 @@ class ewsitem(models.Model):
     time_receive = models.DateTimeField(auto_now_add=True)  # Время получения
     done = models.BooleanField(default=False)  # Обработано
     cat = models.ForeignKey('Category', on_delete=models.PROTECT, null=True)
+
     # log.warning("Got some data. email_title: %s, sender: %s, done: %s", email_title, sender, done)
 
     def __str__(self):

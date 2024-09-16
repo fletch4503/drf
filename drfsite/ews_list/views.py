@@ -18,7 +18,7 @@ from .models import ewsitem
 from .serializers import ewsitemSerializer
 
 
-# Здесь определяем Functional Based View
+# Здесь определяем Functional Based View - отображение на основе функций!!!
 def index_view(request: HttpRequest) -> HttpResponse:  # Описываем действия
     # def index_view(request: HttpRequest, pk) -> HttpResponse:  # Описываем действия для Functional view
     # conf_logging(level=logging.DEBUG)
@@ -32,15 +32,18 @@ def index_view(request: HttpRequest) -> HttpResponse:  # Описываем де
         context={"ews_items": ews_items},  # Обращение в БД за всеми элементами
     )
 
+
 # класс, по которому возвращается список записей в JSON-формате
-class ewsAPIList(generics. ListCreateAPIView):
+class ewsAPIList(generics.ListCreateAPIView):
     queryset = ewsitem.objects.all()
     serializer_class = ewsitemSerializer
 
-# класс для отображения содержимого БД или внесения изменений в БД
-class ewsAPIView(APIView):
+
+# класс для отображения содержимого БД или внесения изменений в БД REST_FRAMEWORK
+class ewsAPIView(APIView):  # - отображение на основе классов!!!
 
     def get(self, request):
+
         w = ewsitem.objects.all()
         return Response({'posts': ewsitemSerializer(w, many=True).data})
 
@@ -72,4 +75,3 @@ class ewsAPIView(APIView):
         serializer.save()
 
         return Response({"post": serializer.data})
-

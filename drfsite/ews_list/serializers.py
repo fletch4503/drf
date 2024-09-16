@@ -11,6 +11,7 @@ class ewsitemModel:
         self.email_title = email_title
         self.sender = sender
 
+
 class ewsitemSerializer(serializers.ModelSerializer):
     class Meta:
         model = ewsitem

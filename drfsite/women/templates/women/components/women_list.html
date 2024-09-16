@@ -17,24 +17,28 @@
   <table>
   <tr>
     <th>id</th>
-    <th>What to Do</th>
-    <th>Current Status</th>
+    <th>Title</th>
+    <th>is Published</th>
+    <th>Category</th>
   </tr>
   <ul>
-    {% for todo_item in object_list %}
+    {% for women_item in object_list %}
       <tr>
         <td>
-          <a href="{% url 'todo_list:detail' pk=todo_item.pk %}"> {{todo_item.pk}} </a>
+          <a href="{% url 'women:detail' pk=women_item.pk %}"> {{women_item.pk}} </a>
         </td>
         <td>
-          <a href="{% url 'todo_list:detail' pk=todo_item.pk %}"> {{ todo_item.title }} </a>
+          <a href="{% url 'women:detail' pk=women_item.pk %}"> {{ women_item.title }} </a>
         </td>
         <td>
-          {% if todo_item.done %}
+          {% if women_item.is_published %}
             ✅
           {% else %}
             ❌
           {% endif %} <br>
+        </td>
+        <td>
+          <a href="{% url 'women:detail' pk=women_item.pk %}"> {{ women_item.cat }} </a>
         </td>
       </tr>
     {% endfor %}

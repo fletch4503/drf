@@ -32,7 +32,8 @@ git remote add origin https://github.com/fletch4503/pwp_FastAPI.git     - add re
 docker compose up -d pg                                                 - Install pg db in Docker
 docker compose ps                                                       - check state Docker
 poetry install                                                      - install packages in order to pyproject.toml file
-python -m venv .venv                                                 - install virtual env
+python -m venv .venv                                                - install virtual env
+.venv/scripts/activate                                              - activate virtual env
 alembic init -t async alembic                                       - initiate alembic dir and setting it up
 alembic revision --autogenerate -m "Create User Table"              - create  db migration
 alembic revision --autogenerate -m "Create access_tokens table"

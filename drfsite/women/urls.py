@@ -6,5 +6,8 @@ from . import views
 app_name = "women"
 
 urlpatterns = [
-    path("", views.women_index, name="index"),
+    path("", views.WomenListIndexView.as_view(), name="index"),
+    path("list/", views.WomenListView.as_view(), name="list"),  # Список всех женщин - отображение на основе класса
+    path("<int:pk>/", views.WomenDetailView.as_view(), name="detail"),  # Детальный вид по элементу из списка
+
 ]
