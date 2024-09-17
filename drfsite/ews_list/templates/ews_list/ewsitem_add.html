@@ -12,13 +12,19 @@
     {% comment %}  <li><a href="{% url 'ews_list:done' %}">Done EWS items</a></li> {% endcomment %}
     <li><a href="{% url 'ews_list:add' %}">Add EWS item</a></li>
   </ul>
-  <h3>EWS Item:</h3>
+  <h3>EWS Item ADD:</h3>
   <div>
-    <div>Title: <strong>{{ object.email_title }}</strong></div>
-    <div>Content: <strong>{{ object.sender }}</strong></div>
-    <div>Done: <strong>{{ object.done }}</strong></div>
-    <div>Category: <strong>{{ object.cat }}</strong></div>
-     <br>
-  </div>
+    <form method="post" enctype="multipart/form-data">
 
+        <!-- Security token -->
+        {% csrf_token %}
+
+        <!-- Using the formset -->
+        {{ form.as_p }}
+
+        <input type="submit" value="Submit">
+    </form>
+   <br>
+   <br>
+  </div>
 {% endblock body %}

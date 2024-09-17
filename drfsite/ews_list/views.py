@@ -1,7 +1,10 @@
 # from django.shortcuts import render
+# from django.contrib import messages
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
-from django.views.generic import CreateView, ListView, DetailView, FormView
+from django.urls import reverse_lazy
+# from django.views import View
+from django.views.generic import CreateView, ListView, DetailView, FormView, View
 from rest_framework import generics
 # CreateAPIView – создание данных по POST-запросу;
 # ListAPIView – чтение списка данных по GET-запросу;
@@ -12,9 +15,10 @@ from rest_framework import generics
 # RetrieveUpdateAPIView – чтение и изменение отдельной записи (GET-, PUT- и PATCH-запросы);
 # RetrieveDestroyAPIView – чтение (GET-запрос) и удаление (DELETE-запрос) отдельной записи;
 # RetrieveUpdateDestroyAPIView – чтение, изменение и добавление отдельной записи (GET-, PUT-, PATCH- и DELETE-запросы).
-from rest_framework.response import Response
-from rest_framework.views import APIView
+# from rest_framework.response import Response
+# from rest_framework.views import APIView
 from .models import ewsitem
+from .form import ewsitemForm
 # from django.forms.models import model_to_dict
 from .serializers import ewsitemSerializer
 
@@ -37,16 +41,75 @@ def index_view(request: HttpRequest) -> HttpResponse:  # Описываем де
 # Вид на основе классов - класс создания элемента
 class ewsitemCreate(CreateView):
     model = ewsitem
-    fields = [
-        "email_title",
-        "sender",
-        "done",
-        "cat",
-    ]
+    form_class = ewsitemForm
+    template_name = "ews_list/ewsitem_add.html"
+    success_url = reverse_lazy('home')
+    # fields = [
+    #     "email_title",
+    #     "sender",
+    #     "done",
+    #     "cat",
+    # ]
+    # def form_valid(self, form):
+    #     suc = self.get_success_url()
+    #     print(f"Текущая ссылка для перенаправления - {suc}")
+    #     return redirect(suc)
+    # def get_success_url(self):
+    #     return reverse('ewsitem_detail', args=[str(self)])
+    # success_url = reverse_lazy('success.html')
+    # def get_success_url(self):
+    #     return redirect(self.request.META.get('HTTP_REFERER', '/ews_list/ewsitem_detail.html'))
+    # def form_valid(self, form):
+    #     success_url = self.get_success_url()
+    #     print(f'получили success_url: {success_url}, для объекта: {str(form)}')
+    #     return super().form_valid(form)
+
+    # def get_success_url(self):
+    #     messages.add_message(self.request, messages.INFO, 'form submission success')
+    #     return reverse(
+    #         'cat:detail_cat',
+    #         [],
+    #     )
+    # def get_success_url(self, **kwargs):
+    #     success_url = super().get_success_url()
+    #     obj = self.object
+    #     print(f'получили success_url: {success_url}, для объекта: {str(obj)}')
+    #     additional_param = 'example_param'
+    #     return "{0}?param={1}".format(success_url, additional_param)
+
+
+class ewsitemFormView(FormView):  # создаем вид на основе формы ewsitemForm из Form
+    # specify the Form you want to use
+    form_class = ewsitemForm
+    fields = '__all__'
+    # specify name of template
+    template_name = "ews_list/ewsitem_add.html"
+    success_url = '/'
+
+    # success_url = reverse_lazy('/')
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+    # can specify success url
+    # url to redirect after successfully
+    # updating details
+
+
+class ewsitemView(View):
+
+    def get(self):
+        ews_items = ewsitem.objects.all()[:3]
+        return HttpResponse(
+            template_name="ews_list/ewsitem_detail.html",
+            context={"ews_items": ews_items},  # Обращение в БД за всеми элементами
+        )
 
 
 class ewsitemList(ListView):
     model = ewsitem
+    template_name = "ews_list/ewsitem_list.html"
 
 
 class ewsitemListIndexView(ListView):
@@ -59,26 +122,12 @@ class ewsitemDetailView(DetailView):
     model = ewsitem
 
     # override context data
-    def get_context_data(self, *args, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super(ewsitemDetailView,
-                        self).get_context_data(*args, **kwargs)
+                        self).get_context_data(**kwargs)
         # add extra field
         context["category"] = "cat_id"
         return context
-
-
-
-class ewsitemFormView(FormView):
-    # specify the Form you want to use
-    form_class = ewsitemForm
-     
-    # specify name of template
-    template_name = "ews_list / ewsitem_form.html"
- 
-    # can specify success url
-    # url to redirect after successfully
-    # updating details
-    success_url ="/thanks/
 
 
 # класс, по которому возвращается список записей в JSON-формате
@@ -88,41 +137,41 @@ class ewsAPIList(generics.ListCreateAPIView):
 
 
 # класс для отображения содержимого БД или внесения изменений в БД REST_FRAMEWORK
-class ewsAPIView(APIView):  # - отображение на основе классов!!!
-
-    def get(self, request):
-
-        w = ewsitem.objects.all()
-        return Response({'posts': ewsitemSerializer(w, many=True).data})
-
-    def post(self, request):
-        serializer = ewsitemSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        # post_new = Women.objects.create(
-        #     title=request.data['title'],
-        #     content=request.data['content'],
-        #     cat_id=request.data['cat_id']
-        # )
-
-        # return Response({'post': WomenSerializer(post_new).data})
-        return Response({'post': serializer.data})
-
-    def put(self, request, *args, **kwargs):
-        pk = kwargs.get("pk", None)
-        if not pk:
-            return Response({"error": "Method PUT not allowed"})
-
-        try:
-            instance = ewsitem.objects.get(pk=pk)
-        except:
-            return Response({"error": "Object does not exists"})
-
-        serializer = ewsitemSerializer(data=request.data, instance=instance)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response({"post": serializer.data})
+# class ewsAPIView(APIView):  # - отображение на основе классов!!!
+#
+#     def get(self, request):
+#
+#         w = ewsitem.objects.all()
+#         return Response({'posts': ewsitemSerializer(w, many=True).data})
+#
+#     def post(self, request):
+#         serializer = ewsitemSerializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         # post_new = Women.objects.create(
+#         #     title=request.data['title'],
+#         #     content=request.data['content'],
+#         #     cat_id=request.data['cat_id']
+#         # )
+#
+#         # return Response({'post': WomenSerializer(post_new).data})
+#         return Response({'post': serializer.data})
+#
+#     def put(self, request, *args, **kwargs):
+#         pk = kwargs.get("pk", None)
+#         if not pk:
+#             return Response({"error": "Method PUT not allowed"})
+#
+#         try:
+#             instance = ewsitem.objects.get(pk=pk)
+#         except:
+#             return Response({"error": "Object does not exists"})
+#
+#         serializer = ewsitemSerializer(data=request.data, instance=instance)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#
+#         return Response({"post": serializer.data})
 
 
 def about(request):
@@ -130,4 +179,3 @@ def about(request):
         request,
         template_name="about.html",
     )
-

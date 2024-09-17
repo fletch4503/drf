@@ -39,14 +39,14 @@ def postwoman(request: HttpRequest) -> HttpResponse:  # Функция для о
     title = request.POST.get("title", "Undefined")
     content = request.POST.get("content", "Undefined")
     is_published = request.POST.get("is_published", 0)
-    # return render(
-    #     request,
-    #     template_name="woman/woman_add.html",
-    #     # template_name="women/index.html",
-    #     context={"title": title, "content": content, "published": is_published},
-    #     # Передача объектов классов --> Обращение в БД за всеми элементами
-    # )
-    return HttpResponse(f"<h2>title: {title}  content: {content}  published: {is_published}</h2>")
+    return render(
+        request,
+        template_name="woman/woman_add.html",
+        # template_name="women/index.html",
+        context={"title": title, "content": content, "published": is_published},
+        # Передача объектов классов --> Обращение в БД за всеми элементами
+    )
+    # return HttpResponse(f"<h2>title: {title}  content: {content}  published: {is_published}</h2>")
 
 
 def about(request):
