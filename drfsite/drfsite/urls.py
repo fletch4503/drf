@@ -18,6 +18,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
+from django.conf import settings
+from django.conf.urls.static import static
 
 from ews_list.views import *
 from women.views import *
@@ -32,4 +34,4 @@ urlpatterns = [
     path('api/v1/womenlist/', WomenAPIList.as_view()),
     path('api/v1/ewslist/', ewsAPIList.as_view()),
     # path('api/v1/womenlist/<int:pk>/', WomenAPIView.as_view()),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
