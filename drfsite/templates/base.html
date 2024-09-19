@@ -16,18 +16,19 @@
 <body>
   <aside>
     <img  src="{% static 'drfsite/images/tcb.svg' %}" alt="tcb" >
-    <span class="logo" >ProjectWorkPlace</span>
+    <span class="logo" >Project Workplace</span>
     <h3>Навигация</h3>
     {% include "components/navbar.html" %}
   </aside>
   <main>
+    <div class="features">
     {% block body %}
       Base Body!
     {% endblock body %}
+    </div>
   </main>
-
 <footer>
-  &copy; Django Presale Workplace App
+  &copy; Django PWP App
   {% block footer %}
   {% endblock  %}
 </footer>
