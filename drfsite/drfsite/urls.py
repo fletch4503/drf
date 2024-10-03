@@ -16,13 +16,16 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, re_path, include
 from django.views.generic import TemplateView
 from django.conf import settings
-from django.conf.urls.static import static
+from django.templatetags.static import static
+from django.conf.urls.static import static as static_urls
+from django.views.generic.base import RedirectView
 
 from ews_list.views import *
 from women.views import *
+
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="index.html"), name="index"),  # Class-based views
@@ -33,5 +36,8 @@ urlpatterns = [
     # path('api/v1/womenlist/', WomenAPIView.as_view()),
     path('api/v1/womenlist/', WomenAPIList.as_view()),
     path('api/v1/ewslist/', ewsAPIList.as_view()),
+    # url(r'^favicon\.ico$', RedirectView.as_view(url=static('favicon.ico'))),
+    # эта строка решит проблему!
     # path('api/v1/womenlist/<int:pk>/', WomenAPIView.as_view()),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static_urls(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

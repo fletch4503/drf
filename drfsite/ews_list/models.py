@@ -5,7 +5,7 @@ from django.db import models
 class ewsitem(models.Model):
     # Класс для работы с Exchange-сервером
     class Meta:
-        ordering = ("id",)  # со знаком '-' - обратная сортировка
+        ordering = ("-id",)  # со знаком '-' - обратная сортировка
         verbose_name = "EWS Item"
         verbose_name_plural = "EWS Items"
 
