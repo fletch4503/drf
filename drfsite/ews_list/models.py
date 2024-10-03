@@ -7,6 +7,7 @@ class ewsitem(models.Model):
     class Meta:
         ordering = ("id",)  # со знаком '-' - обратная сортировка
         verbose_name = "EWS Item"
+        verbose_name_plural = "EWS Items"
 
     # Основные поля модели
     email_title = models.CharField(max_length=250)  # Сюда вставляем заголовки писем с типом из exchangelib

@@ -1,20 +1,25 @@
 {% extends "ews_list/base.html" %}
 
 {% block title %}
-  EWS List App
+   Add new Ewsitem
 {% endblock  %}
 
 {% block body %}
-  {% filter upper%}
-    <h2>EWS List Приложение</h2>
-  {% endfilter%}
-  {% comment %}  <p>Вывод всех email-сообщений в шаблон Django</p> {% endcomment %}
+  <h2>EWS List Приложение</h2>
   <ul>
     <li><a href="{% url 'ews_list:list' %}">All EWS items</a></li>
     {% comment %}  <li><a href="{% url 'ews_list:done' %}">Done EWS items</a></li> {% endcomment %}
     <li><a href="{% url 'ews_list:add' %}">Add EWS item</a></li>
   </ul>
 
-  <h3>Exchange Web Services (EWS):</h3>
-  {% include 'ews_list/components/ews_items_list.html' %}
-{% endblock body %}
+  <h3>Create new ewsitem:</h3>
+<!--<form method="POST" enctype="multipart/form-data">-->
+  <form method="post">
+
+    <!-- Security token -->
+    {% csrf_token %}
+    <!-- Using the formset -->
+    {{ form.as_p }}
+    <input type="submit" value="Add">
+  </form>
+{% endblock %}

@@ -2,8 +2,12 @@ check venv!
 cd drfsite
 pip install -r requirements.txt
 pip freeze > requirements.txt
-
 pip install django
+ or
+poetry init --no-interaction
+poetry add django
+poetry install
+
 django-admin startproject drfsite
 python manage.py migrate
 python manage.py makemigrations

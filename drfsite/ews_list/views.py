@@ -1,9 +1,10 @@
 # from django.shortcuts import render
 # from django.contrib import messages
+# from PyQt6.QtQml import kwargs
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
-from django.urls import reverse_lazy
-# from django.views import View
+# from django.urls import reverse_lazy
+
 from django.views.generic import CreateView, ListView, DetailView, FormView, View
 from rest_framework import generics
 # CreateAPIView – создание данных по POST-запросу;
@@ -18,7 +19,7 @@ from rest_framework import generics
 # from rest_framework.response import Response
 # from rest_framework.views import APIView
 from .models import ewsitem
-from .form import ewsitemForm
+from .forms import ewsitemForm
 # from django.forms.models import model_to_dict
 from .serializers import ewsitemSerializer
 
@@ -30,7 +31,7 @@ def index_view(request: HttpRequest) -> HttpResponse:  # Описываем де
     ews_items = ewsitem.objects.all()[:3]  # свойство objects есть в БД сортировкой по id. Выводим 3 элемента
     # ews_items = ewsitem.objects.get(pk=pk)  # действия для Functional view -> если не нашли - делаем, исключение
     # ews_items = ewsitem.objects.order_by("id").all()  # свойство objects есть в БД сортировкой по id
-
+    data = {'title': 'EWS List Приложение!!!'}
     return render(
         request,
         template_name="ews_list/index.html",
@@ -39,11 +40,11 @@ def index_view(request: HttpRequest) -> HttpResponse:  # Описываем де
 
 
 # Вид на основе классов - класс создания элемента
-class ewsitemCreate(CreateView):
+class ewsitemCreateView(CreateView):
     model = ewsitem
     form_class = ewsitemForm
-    template_name = "ews_list/ewsitem_add.html"
-    success_url = reverse_lazy('home')
+    template_name = "ews_list/ewsitem_form.html"
+    # success_url = reverse_lazy('home')
     # fields = [
     #     "email_title",
     #     "sender",
@@ -70,12 +71,16 @@ class ewsitemCreate(CreateView):
     #         'cat:detail_cat',
     #         [],
     #     )
-    # def get_success_url(self, **kwargs):
-    #     success_url = super().get_success_url()
-    #     obj = self.object
-    #     print(f'получили success_url: {success_url}, для объекта: {str(obj)}')
-    #     additional_param = 'example_param'
-    #     return "{0}?param={1}".format(success_url, additional_param)
+    def get_success_url(self):
+        # success_url = super().get_success_url()
+        #     obj = self.object
+        #     print(f'получили success_url: {success_url}, для объекта: {str(obj)}')
+        #     additional_param = 'example_param'
+        return reverse(
+            "ews_list:detail",
+            kwargs={"pk": self.object.pk},
+        )
+        # return "{0}?param={1}".format(success_url, additional_param)
 
 
 class ewsitemFormView(FormView):  # создаем вид на основе формы ewsitemForm из Form
