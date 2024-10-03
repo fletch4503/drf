@@ -1,9 +1,10 @@
 # from django.shortcuts import render
 # from django.contrib import messages
 # from PyQt6.QtQml import kwargs
+
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
-from django.urls import reverse
+# from django.urls import reverse
 
 from django.views.generic import CreateView, ListView, DetailView, FormView, View
 from rest_framework import generics
