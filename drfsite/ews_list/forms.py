@@ -18,4 +18,7 @@ class ewsitemForm(forms.ModelForm):
             max_length=250,
             widget=forms.TextInput()
         )
+        help_texts = {
+            "email_title": "Тема самого письма",
+        }
         # fields = '__all__'
