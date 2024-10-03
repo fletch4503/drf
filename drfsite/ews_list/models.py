@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 # Create your models here.
@@ -16,6 +17,15 @@ class ewsitem(models.Model):
     done = models.BooleanField(default=False)  # Обработано
     cat = models.ForeignKey('Category', on_delete=models.PROTECT, null=True)
 
+    def get_absolute_url(self):
+        # success_url = super().get_success_url()
+        #     obj = self.object
+        #     print(f'получили success_url: {success_url}, для объекта: {str(obj)}')
+        #     additional_param = 'example_param'
+        return reverse(
+            "ews_list:detail",
+            kwargs={"pk": self.pk},
+        )
     # log.warning("Got some data. email_title: %s, sender: %s, done: %s", email_title, sender, done)
 
     def __str__(self):

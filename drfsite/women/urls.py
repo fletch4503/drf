@@ -16,6 +16,7 @@ urlpatterns = [
     path("<int:pk>/", views.WomenDetailView.as_view(), name="detail"),  # Детальный вид по элементу из списка
     re_path(r'about', views.about, name="about"),
     path("actress/", include(actress_patterns)),
-    path("postwoman/", views.postwoman, name="add"),
+    path("add/", views.CreateWomenView.as_view(), name="add"),
+    # path("add/", views.postwoman, name="add"),
 
 ]

@@ -1,19 +1,21 @@
 {% extends "women/base.html" %}
 
 {% block title %}
-  Women List App
+  Womens List
 {% endblock  %}
 
 {% block body %}
-
   <h2>Women List Приложение</h2>
   <ul>
     {% comment %}  <p>Вывод списка женщин списком в шаблон Django</p> {% endcomment %}
     <li><a href="{% url 'women:list' %}">All Women</a></li>
     <li><a href="{% url 'women:add' %}">Add Women</a></li>
   </ul>
-
-  <h3>Womens:</h3>
+  <h3>Create new Women:</h3>
+  <form method="post" >
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Add" />
+  </form>
   {% include 'women/components/women_list.html' %}
-
 {% endblock body %}

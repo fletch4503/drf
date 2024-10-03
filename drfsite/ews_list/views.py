@@ -44,43 +44,16 @@ class ewsitemCreateView(CreateView):
     model = ewsitem
     form_class = ewsitemForm
     template_name = "ews_list/ewsitem_form.html"
-    # success_url = reverse_lazy('home')
-    # fields = [
-    #     "email_title",
-    #     "sender",
-    #     "done",
-    #     "cat",
-    # ]
-    # def form_valid(self, form):
-    #     suc = self.get_success_url()
-    #     print(f"Текущая ссылка для перенаправления - {suc}")
-    #     return redirect(suc)
     # def get_success_url(self):
-    #     return reverse('ewsitem_detail', args=[str(self)])
-    # success_url = reverse_lazy('success.html')
-    # def get_success_url(self):
-    #     return redirect(self.request.META.get('HTTP_REFERER', '/ews_list/ewsitem_detail.html'))
-    # def form_valid(self, form):
-    #     success_url = self.get_success_url()
-    #     print(f'получили success_url: {success_url}, для объекта: {str(form)}')
-    #     return super().form_valid(form)
-
-    # def get_success_url(self):
-    #     messages.add_message(self.request, messages.INFO, 'form submission success')
+    #     # success_url = super().get_success_url()
+    #     #     obj = self.object
+    #     #     print(f'получили success_url: {success_url}, для объекта: {str(obj)}')
+    #     #     additional_param = 'example_param'
     #     return reverse(
-    #         'cat:detail_cat',
-    #         [],
+    #         "ews_list:detail",
+    #         kwargs={"pk": self.object.pk},
     #     )
-    def get_success_url(self):
-        # success_url = super().get_success_url()
-        #     obj = self.object
-        #     print(f'получили success_url: {success_url}, для объекта: {str(obj)}')
-        #     additional_param = 'example_param'
-        return reverse(
-            "ews_list:detail",
-            kwargs={"pk": self.object.pk},
-        )
-        # return "{0}?param={1}".format(success_url, additional_param)
+    # return "{0}?param={1}".format(success_url, additional_param)
 
 
 class ewsitemFormView(FormView):  # создаем вид на основе формы ewsitemForm из Form

@@ -5,6 +5,12 @@
 {% endblock  %}
 
 {% block body %}
+  <h2>Women List Приложение</h2>
+  <ul>
+    {% comment %}  <p>Вывод списка женщин списком в шаблон Django</p> {% endcomment %}
+    <li><a href="{% url 'women:list' %}">All Women</a></li>
+    <li><a href="{% url 'women:add' %}">Add Women</a></li>
+  </ul>
   <h3>Womens:</h3>
   {% include 'women/components/women_list.html' %}
 {% endblock body %}

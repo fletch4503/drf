@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 class Women(models.Model):
@@ -12,6 +13,17 @@ class Women(models.Model):
     class Meta:
         ordering = ("id",)  # со знаком '-' - обратная сортировка
         verbose_name = "Women Item"
+        verbose_name_plural = "Women Items"
+
+    def get_absolute_url(self):
+        # success_url = super().get_success_url()
+        #     obj = self.object
+        #     print(f'получили success_url: {success_url}, для объекта: {str(obj)}')
+        #     additional_param = 'example_param'
+        return reverse(
+            "women:detail",
+            kwargs={"pk": self.pk},
+        )
 
     def __str__(self):
         return self.title

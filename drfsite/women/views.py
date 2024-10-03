@@ -17,6 +17,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Women
+from .forms import WomenForm
 # from django.forms.models import model_to_dict
 from .serializers import WomenSerializer
 
@@ -72,7 +73,9 @@ def top(request):
 
 class CreateWomenView(CreateView):  # ListView - готовые объекты для отображения из django.views.generic
     model = Women
-    fields = '__all__'
+    form_class = WomenForm
+    # fields = '__all__'
+    template_name = "women/women_form.html"
 
 
 class WomenListView(ListView):  # ListView - готовые объекты для отображения из django.views.generic
