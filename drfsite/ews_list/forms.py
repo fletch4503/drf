@@ -13,7 +13,7 @@ class ewsitemForm(forms.ModelForm):
         # done = models.BooleanField(default=False)  # Обработано
         # cat = models.ForeignKey('Category', on_delete=models.PROTECT, null=True)
         fields = ("email_title", "sender", "done", "cat")
-        # Здесь будет переопределение полей
+        # Здесь будет переопределение полей из Exchangelib
         email_title = forms.CharField(
             max_length=250,
             widget=forms.TextInput()

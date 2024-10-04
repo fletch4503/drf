@@ -9,6 +9,9 @@
       border: 1px solid #dddddd;
       text-align: left;
       padding: 3px;
+      padding-left: 10px;
+      font-family: colibri;
+      font-size: 90%;
     }
     tr:nth-child(even) {
       background-color: #dddddd;
@@ -25,10 +28,10 @@
     {% for women_item in object_list %}
       <tr>
         <td>
-          <a href="{% url 'women:detail' pk=women_item.pk %}"> {{women_item.pk}} </a>
+          <a href="{% url 'women:detail' pk=women_item.pk %}"> <b>{{women_item.pk}}</b></a>
         </td>
         <td>
-          <a href="{% url 'women:detail' pk=women_item.pk %}"> {{ women_item.title }} </a>
+          <a href="{% url 'women:detail' pk=women_item.pk %}"> <b>{{ women_item.title }}</b> </a>
         </td>
         <td>
           {% if women_item.is_published %}
@@ -38,7 +41,7 @@
           {% endif %} <br>
         </td>
         <td>
-          <a href="{% url 'women:detail' pk=women_item.pk %}"> {{ women_item.cat }} </a>
+          <a href="{% url 'women:detail' pk=women_item.pk %}"> <b>{{ women_item.cat }}</b> </a>
         </td>
       </tr>
     {% endfor %}

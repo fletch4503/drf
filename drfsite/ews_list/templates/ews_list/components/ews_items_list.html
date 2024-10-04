@@ -1,14 +1,17 @@
  <style>
     table {
-<!--      font-family: arial, sans-serif;-->
-<!--      border-collapse: collapse;-->
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
       width: 100%;
     }
 
     td, th {
+      font-family: tahoma;
       border: 1px solid #dddddd;
       text-align: left;
       padding: 3px;
+      padding-left: 10px;
+      font-size: 75%;
     }
     tr:nth-child(even) {
       background-color: #dddddd;
@@ -19,23 +22,23 @@
     <th>id</th>
     <th>Email Topic</th>
     <th>Sender</th>
-    <th>Current Status</th>
     <th>Category</th>
+    <th>Status</th>
   </tr>
   <ul>
     {% for ews_item in object_list %}
       <tr>
         <td>
-          <a href="{% url 'ews_list:detail' pk=ews_item.pk %}"> {{ ews_item.pk }} </a>
+          <a href="{% url 'ews_list:detail' pk=ews_item.pk %}"> <b>{{ ews_item.pk }}</b> </a>
         </td>
         <td>
-          <a href="{% url 'ews_list:detail' pk=ews_item.pk %}"> {{ ews_item.email_title }} </a>
+          <a href="{% url 'ews_list:detail' pk=ews_item.pk %}"> <b>{{ ews_item.email_title }}</b> </a>
         </td>
         <td>
-          <a href="{% url 'ews_list:detail' pk=ews_item.pk %}"> {{ ews_item.sender }} </a>
+          <a href="{% url 'ews_list:detail' pk=ews_item.pk %}"> <b>{{ ews_item.sender }}</b> </a>
         </td>
         <td>
-          <a href="{% url 'ews_list:detail' pk=ews_item.pk %}"> {{ ews_item.cat }} </a>
+          <a href="{% url 'ews_list:detail' pk=ews_item.pk %}"> <b>{{ ews_item.cat }}</b> </a>
         </td>
         <td>
            {% if ews_item.done %}
