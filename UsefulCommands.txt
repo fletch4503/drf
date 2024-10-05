@@ -1,5 +1,6 @@
 check venv!
 source .venv/bin/activate   macos
+.venv/Scripts/activate
 python -m venv venv
 
 cd drfsite
