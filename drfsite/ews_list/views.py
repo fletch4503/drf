@@ -92,6 +92,7 @@ class ewsitemList(ListView):
         print("ewsitemList - У вас нет входящих сообщений")
     else:
         print(f'ewsitemList - У вас {total_count} входящих сообщений')
+    # Здесь сортировка по папкам
 
 
 class ewsitemListIndexView(ListView):
