@@ -18,6 +18,7 @@ from .models import ewsitem
 from .forms import ewsitemForm
 # from django.forms.models import model_to_dict
 from .serializers import ewsitemSerializer
+from .exch_lib_model import pwp_exch_model
 
 
 # Здесь определяем Functional Based View - отображение на основе функций!!!
@@ -59,7 +60,6 @@ class ewsitemFormView(FormView):  # создаем вид на основе фо
     # specify name of template
     template_name = "ews_list/ewsitem_add.html"
     success_url = '/'
-
     # success_url = reverse_lazy('/')
 
     def form_valid(self, form):
@@ -84,6 +84,14 @@ class ewsitemView(View):
 class ewsitemList(ListView):
     model = ewsitem
     template_name = "ews_list/ewsitem_list.html"
+    mpe = pwp_exch_model()  # Объект для подключения к почте Exchange
+    total_count = 0
+    for i in range(0, len(mpe.msg_cnt_list)):
+        total_count = total_count + mpe.msg_cnt_list[i]
+    if total_count == 0:
+        print("ewsitemList - У вас нет входящих сообщений")
+    else:
+        print(f'ewsitemList - У вас {total_count} входящих сообщений')
 
 
 class ewsitemListIndexView(ListView):
