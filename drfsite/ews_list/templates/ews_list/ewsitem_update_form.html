@@ -1,7 +1,7 @@
 {% extends "ews_list/base.html" %}
 
 {% block title %}
-   Add new Ewsitem
+   Update Ewsitem #{{ object.pk }}
 {% endblock  %}
 
 {% block body %}
@@ -9,11 +9,10 @@
   <ul>
     <li><a href="{% url 'ews_list:list' %}">All EWS items</a></li>
     <li><a href="{% url 'ews_list:add' %}">Add EWS item</a></li>
-    {% comment %} <li><a href="{% url 'ews_list:update' %}">Update EWS item</a></li> {% endcomment %}
-    {% comment %} <li><a href="{% url 'ews_list:delete' %}">Delete EWS item</a></li> {% endcomment %}
     {% comment %}  <li><a href="{% url 'ews_list:done' %}">Done EWS items</a></li> {% endcomment %}
   </ul>
-  <h3>Create new ewsitem:</h3>
+
+  <h3>Update ewsitem:</h3>
 <!--<form method="POST" enctype="multipart/form-data">-->
   <form method="post">
 
@@ -21,6 +20,11 @@
     {% csrf_token %}
     <!-- Using the formset -->
     {{ form.as_p }}
-    <input type="submit" value="Add">
+    <input type="submit" value="Update">
   </form>
+
+  <div>
+    <a href="{% url 'ews_list:detail' object.pk %}"
+    >Update EWS item</a>
+  </div>
 {% endblock %}

@@ -1,16 +1,15 @@
 {% extends "ews_list/base.html" %}
 
 {% block title %}
-   #{{ object.pk }}
+   #{{ object.id }}
 {% endblock  %}
 
 {% block body %}
   <h1>EWS List Приложение</h1>
-  {% comment %}  <p>Вывод списка женщин списком в шаблон Django</p> {% endcomment %}
   <ul>
     <li><a href="{% url 'ews_list:list' %}">All EWS items</a></li>
-    {% comment %}  <li><a href="{% url 'ews_list:done' %}">Done EWS items</a></li> {% endcomment %}
     <li><a href="{% url 'ews_list:add' %}">Add EWS item</a></li>
+    {% comment %}  <li><a href="{% url 'ews_list:done' %}">Done EWS items</a></li> {% endcomment %}
   </ul>
   <h3>EWS Item:</h3>
   <div>
@@ -20,5 +19,14 @@
     <div>Category: <strong>{{ object.cat }}</strong></div>
      <br>
   </div>
+
+  <ul>
+    <li>
+      <a href="{% url 'ews_list:update' object.pk %}">Update EWS item</a>
+    </li>
+    <li>
+      <a href="{% url 'ews_list:delete' object.pk %}">Delete EWS item</a>
+    </li>
+  </ul>
 
 {% endblock body %}

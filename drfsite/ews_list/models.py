@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import reverse
 
 
-# Create your models here.
+# Каркас тестовой модели. Нужна модель всей таблицы Project
 class ewsitem(models.Model):
     # Класс для работы с Exchange-сервером
     class Meta:

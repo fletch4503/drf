@@ -1,8 +1,22 @@
-from django.http import HttpRequest, HttpResponse
+from django.http import (
+    HttpRequest,
+    HttpResponse,
+    HttpResponseRedirect,
+)
 from django.shortcuts import render, get_object_or_404
 
-from django.views.generic import CreateView, ListView, DetailView, FormView, View
+from django.views.generic import (
+    CreateView,
+    ListView,
+    DetailView,
+    FormView,
+    DeleteView,
+    UpdateView,
+    View,
+)
 from rest_framework import generics
+from rest_framework.reverse import reverse_lazy
+
 # CreateAPIView – создание данных по POST-запросу;
 # ListAPIView – чтение списка данных по GET-запросу;
 # RetrieveAPIView – чтение конкретных данных (записи) по GET-запросу;
@@ -15,7 +29,7 @@ from rest_framework import generics
 # from rest_framework.response import Response
 # from rest_framework.views import APIView
 from .models import ewsitem
-from .forms import ewsitemForm
+from .forms import ewsitemCreateForm, ewsitemUpdateForm
 # from django.forms.models import model_to_dict
 from .serializers import ewsitemSerializer
 from .exch_lib_model import pwp_exch_model
@@ -39,7 +53,7 @@ def index_view(request: HttpRequest) -> HttpResponse:  # Описываем де
 # Вид на основе классов - класс создания элемента
 class ewsitemCreateView(CreateView):
     model = ewsitem
-    form_class = ewsitemForm
+    form_class = ewsitemCreateForm
     template_name = "ews_list/ewsitem_form.html"
     # def get_success_url(self):
     #     # success_url = super().get_success_url()
@@ -53,13 +67,31 @@ class ewsitemCreateView(CreateView):
     # return "{0}?param={1}".format(success_url, additional_param)
 
 
-class ewsitemFormView(FormView):  # создаем вид на основе формы ewsitemForm из Form
+class ewsitemUpdateView(UpdateView):
+    model = ewsitem
+    template_name_suffix = "_update_form"
+    form_class = ewsitemUpdateForm
+
+
+class ewsitemDeleteView(DeleteView):
+    model = ewsitem
+    success_url = reverse_lazy("ews_list:list")
+
+    def form_valid(self, form):
+        success_url = self.get_success_url()
+        self.object.archived = True
+        self.object.save()
+        return HttpResponseRedirect(success_url)
+
+
+class ewsitemFormView(FormView):  # создаем вид на основе формы ewsitemCreateForm из Form
     # specify the Form you want to use
-    form_class = ewsitemForm
+    form_class = ewsitemCreateForm
     fields = '__all__'
     # specify name of template
     template_name = "ews_list/ewsitem_add.html"
     success_url = '/'
+
     # success_url = reverse_lazy('/')
 
     def form_valid(self, form):
@@ -72,7 +104,6 @@ class ewsitemFormView(FormView):  # создаем вид на основе фо
 
 
 class ewsitemView(View):
-
     def get(self):
         ews_items = ewsitem.objects.all()[:3]
         return HttpResponse(

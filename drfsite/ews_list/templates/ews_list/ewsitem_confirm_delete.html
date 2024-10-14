@@ -1,0 +1,26 @@
+{% extends "ews_list/base.html" %}
+
+{% block title %}
+   Confirm Delete Ewsitem #{{ object.pk }}
+{% endblock  %}
+
+{% block body %}
+  <h2>Confirm delete "{{ object.title }}"</h2>
+  <p>
+    Are you sure you want to delete Ewsitem
+    <code>{{ object.email_title }}</code>
+    from sender <i> {{ object.sender }}</i>?
+  </p>
+  <form method="post">
+    <!-- Security token -->
+    {% csrf_token %}
+    <!-- Using the formset -->
+    {{ form }}
+    <button type="submit">Delete</button>
+  </form>
+
+  <div>
+    <a href="{% url 'ews_list:detail' object.pk %}"
+    >Back to EWS item detail</a>
+  </div>
+{% endblock %}

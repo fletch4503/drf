@@ -3,7 +3,7 @@ from .models import ewsitem
 
 
 # Создаем класс формы для модели ewsitem
-class ewsitemForm(forms.ModelForm):
+class ewsitemCreateForm(forms.ModelForm):
     class Meta:
         model = ewsitem
         # Основные поля модели
@@ -21,4 +21,13 @@ class ewsitemForm(forms.ModelForm):
         help_texts = {
             "email_title": "Тема самого письма",
         }
-        # fields = '__all__'
+
+
+class ewsitemUpdateForm(forms.ModelForm):
+    class Meta(ewsitemCreateForm.Meta):
+        fields = (
+            "email_title",
+            "sender",
+            "done",
+            "cat",
+        )
