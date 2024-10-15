@@ -101,6 +101,7 @@ class ewsitemDeleteView(DeleteView):
 
     def form_valid(self, form):
         success_url = self.get_success_url()
+        # self.object.delete()
         self.object.archived = True
         self.object.save()
         return HttpResponseRedirect(success_url)
