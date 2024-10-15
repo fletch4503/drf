@@ -143,7 +143,7 @@ class ewsitemList(ListView):
 class ewsitemListIndexView(ListView):
     model = ewsitem
     template_name = "ews_list/index.html"
-    queryset = ewsitem.objects.all()[:3]
+    queryset = ewsitem.objects.filter(archived=False)[:3]
 
 
 # класс, по которому возвращается список записей в JSON-формате
