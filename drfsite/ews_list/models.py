@@ -16,6 +16,7 @@ class ewsitem(models.Model):
     time_receive = models.DateTimeField(auto_now_add=True)  # Время получения
     done = models.BooleanField(default=False)  # Обработано
     cat = models.ForeignKey('Category', on_delete=models.PROTECT, null=True)
+    archived = models.BooleanField(default=False)
 
     def get_absolute_url(self):
         # success_url = super().get_success_url()

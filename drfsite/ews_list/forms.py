@@ -1,5 +1,5 @@
 from django import forms
-from .models import ewsitem
+from ews_list.models import ewsitem
 
 
 # Создаем класс формы для модели ewsitem

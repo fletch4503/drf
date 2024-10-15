@@ -50,11 +50,33 @@ def index_view(request: HttpRequest) -> HttpResponse:  # Описываем де
     )
 
 
+class ewsitemView(View):
+    def get(self):
+        ews_items = ewsitem.objects.all()[:3]
+        return HttpResponse(
+            template_name="ews_list/ewsitem_detail.html",
+            context={"ews_items": ews_items},  # Обращение в БД за всеми элементами
+        )
+
+
+class ewsitemDetailView(DetailView):
+    model = ewsitem
+    queryset = ewsitem.objects.filter(archived=False)
+
+    # override context data
+    def get_context_data(self, **kwargs):
+        context = super(ewsitemDetailView,
+                        self).get_context_data(**kwargs)
+        # add extra field
+        context["category"] = "cat_id"
+        return context
+
+
 # Вид на основе классов - класс создания элемента
 class ewsitemCreateView(CreateView):
     model = ewsitem
     form_class = ewsitemCreateForm
-    template_name = "ews_list/ewsitem_form.html"
+    # template_name = "ews_list/ewsitem_form.html"
     # def get_success_url(self):
     #     # success_url = super().get_success_url()
     #     #     obj = self.object
@@ -103,18 +125,10 @@ class ewsitemFormView(FormView):  # создаем вид на основе фо
     # updating details
 
 
-class ewsitemView(View):
-    def get(self):
-        ews_items = ewsitem.objects.all()[:3]
-        return HttpResponse(
-            template_name="ews_list/ewsitem_detail.html",
-            context={"ews_items": ews_items},  # Обращение в БД за всеми элементами
-        )
-
-
 class ewsitemList(ListView):
     model = ewsitem
     template_name = "ews_list/ewsitem_list.html"
+    queryset = ewsitem.objects.filter(archived=False)
     mpe = pwp_exch_model()  # Объект для подключения к почте Exchange
     total_count = 0
     for i in range(0, len(mpe.msg_cnt_list)):
@@ -130,18 +144,6 @@ class ewsitemListIndexView(ListView):
     model = ewsitem
     template_name = "ews_list/index.html"
     queryset = ewsitem.objects.all()[:3]
-
-
-class ewsitemDetailView(DetailView):
-    model = ewsitem
-
-    # override context data
-    def get_context_data(self, **kwargs):
-        context = super(ewsitemDetailView,
-                        self).get_context_data(**kwargs)
-        # add extra field
-        context["category"] = "cat_id"
-        return context
 
 
 # класс, по которому возвращается список записей в JSON-формате
