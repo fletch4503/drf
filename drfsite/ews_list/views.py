@@ -42,7 +42,7 @@ def index_view(request: HttpRequest) -> HttpResponse:  # Описываем де
     ews_items = ewsitem.objects.all()[:3]  # свойство objects есть в БД сортировкой по id. Выводим 3 элемента
     # ews_items = ewsitem.objects.get(pk=pk)  # действия для Functional view -> если не нашли - делаем, исключение
     # ews_items = ewsitem.objects.order_by("id").all()  # свойство objects есть в БД сортировкой по id
-    data = {'title': 'EWS List Приложение!!!'}
+    # data = {'title': 'EWS List Приложение!!!'}
     return render(
         request,
         template_name="ews_list/index.html",
@@ -51,7 +51,8 @@ def index_view(request: HttpRequest) -> HttpResponse:  # Описываем де
 
 
 class ewsitemView(View):
-    def get(self):
+    @staticmethod
+    def get():
         ews_items = ewsitem.objects.all()[:3]
         return HttpResponse(
             template_name="ews_list/ewsitem_detail.html",
