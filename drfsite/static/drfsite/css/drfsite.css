@@ -1,8 +1,8 @@
 {% load static %}
 body {
     font-family: sans-serif;
-    background: #2c2c2c
-    color: #fff;
+    background: #c3c6c4;
+    color: #ffffff;
 }
 
 aside {
@@ -11,7 +11,7 @@ aside {
     width: 20%;
     padding: 2.5%;
     height: 100vh;
-    color: #fff;
+    color: #ffffff;
     border-right: 5px solid #4d4d4d;
 }
 
@@ -30,6 +30,7 @@ aside .logo {
 
 aside h3 {
     font-size: 28px;
+    color: #ffffff;
     margin-top: 50px;
 }
 
@@ -38,7 +39,7 @@ aside ul {
 }
 
 aside ul li {
-    color: #fff;
+    color: #ffffff;
     display: block;
     margin-top: 20px;
     transition: transform .6s ease;
@@ -52,7 +53,7 @@ aside ul li:hover, aside ul a:hover {
 
 main .features {
     float: left;
-    color: #000;
+    color: #000000;
     margin-top: 50px;
     text-align: left;
     width: 70%;

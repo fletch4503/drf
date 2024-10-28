@@ -8,8 +8,8 @@
   <h2>Confirm delete "{{ object.id }}"</h2>
   <p>
     Are you sure you want to delete Ewsitem
-    <code> {{ object.email_title }} </code>
-    from sender <i> {{ object.sender }} </i>?
+    from sender <i> {{ object.sender }} </i>
+    <code> {{ object.email_title }} </code> ?
   </p>
   <form method="post">
     {% csrf_token %}
