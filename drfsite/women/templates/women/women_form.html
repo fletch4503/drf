@@ -5,13 +5,13 @@
 {% endblock  %}
 
 {% block body %}
-  <h2>Women List Приложение</h2>
+  <h2>Employees List Приложение</h2>
   <ul>
     {% comment %}  <p>Вывод списка женщин списком в шаблон Django</p> {% endcomment %}
-    <li><a href="{% url 'women:list' %}">All Women</a></li>
-    <li><a href="{% url 'women:add' %}">Add Women</a></li>
+    <li><a href="{% url 'women:list' %}">All Employees</a></li>
+    <li><a href="{% url 'women:add' %}">Add employee</a></li>
   </ul>
-  <h3>Create new Women:</h3>
+  <h3>Create new employee:</h3>
   <form method="post" >
       {% csrf_token %}
       {{ form.as_p }}
