@@ -28,6 +28,11 @@ from os import listdir, path
 import platform  # Определяем платформу
 import glob
 from datetime import date, datetime, timedelta
+import logging
+from functools import wraps
+from timeit import default_timer
+
+logger = logging.getLogger(__name__)
 
 # from pwp_SplashScreen import *
 
@@ -42,15 +47,57 @@ dbliten     - имя пользователя для подключения к �
 dblitepsw   - пароль для подключения к БД SQLite
 """
 
-from exchangelib import Account, Credentials, Build, Configuration, FaultTolerance, Version, Message, Mailbox, \
-    Folder, HTMLBody, FileAttachment, ItemAttachment, EWSDateTime, EWSTimeZone, EWSDate
-# from exchangelib.util import PrettyXmlHandler
+from exchangelib import (
+    Account,
+    Credentials,
+    Build,
+    Configuration,
+    FaultTolerance,
+    Version,
+    Message,
+    Mailbox,
+    Folder,
+    HTMLBody,
+    FileAttachment,
+    ItemAttachment,
+    EWSDateTime,
+    EWSTimeZone,
+    EWSDate
+)
+from exchangelib.util import PrettyXmlHandler
 from exchangelib.items import SEND_ONLY_TO_ALL, SEND_ONLY_TO_CHANGED
 from exchangelib.properties import DistinguishedFolderId
 
 # Список доменов компании
 # company_domain = ['komus.net', 'region.komus.net', 'spb.komus.net', 'tl.komus.net', 'bony.komus.net', 'tu.komus.net']
 company_domain = ['tsrv-it.ru', 'trlink.ru', 'aksinform.ru', 'tsv-llc.ru', 't-grp.ru']
+
+
+# Совмещаем функцию логирования с временем выполнения
+def configure_logging():
+    logging.basicConfig(
+        level=logging.INFO,
+        datefmt="%Y-%m-%d %H:%M:%S",
+        format="[%(asctime)s.%(msecs)03d] %(funcName)15s %(module)7s:%(lineno)d %(levelname)-6s - %(message)s",
+        handlers=[PrettyXmlHandler()]
+    )
+
+
+def timer(func):
+    @wraps(func)
+    def wrapper(*a, **kw):
+        start_time = default_timer()
+        result = func(*a, **kw)
+        total_time = default_timer() - start_time
+        logger.info(
+            "Func %s call total time %.3f",
+            func.__name__,
+            total_time,
+        )
+        return result
+
+    return wrapper
+
 
 """
 Класс для работы с Exchange-сервером
@@ -61,15 +108,22 @@ class pwp_exch_model:
     # 0 - Total, 1 - Unread, 2 - Suppl, 3 - mtst, 4 - other, 5 - Komus
     msg_cnt_list = [0, 0, 0, 0, 0, 0]  # Обнуляем список счетчиков полученных сообщений в папке inbox
     current_message = None  # Текущее обрабатываемое сообщение
+    configure_logging()
+    # Most class definitions have a docstring containing
+    # a URL to the MSDN page for the corresponding XML element.
+    # Your code that uses Exchangelib Python, and needs debugging goes here:
 
+    @timer
     def __init__(self):  # Подключаемся к Exchange-серверу и проверяем подключение
         try:
             self.credents_project = Credentials(username=exch_username, password=exch_userkey)
-            print("pwp_exch_model --> Запустили подключение Credentials")
+            logger.info("Запустили подключение Credentials")
         except AttributeError:
-            print("Потерялся файл с конфигурацией в директории проекта")
+            logger.error("Потерялся файл с конфигурацией в директории проекта")
             exit()
+        logger.info("Параметры Credentials из Docstring: %s", Credentials.__doc__)
         self.version = Version(build=Build(15, 0, 1497, 4012))
+        logger.info("Параметры Version из Docstring: %s", Version.__doc__)
         # Обрабатываем ошибку в параметрах Exchange-сервера
         try:
             self.conf_exchange = Configuration(
@@ -78,12 +132,17 @@ class pwp_exch_model:
         except NameError:
             print("Не заданы параметры Exchange-сервера")
             exit()
+        logger.info("Параметры Configuration из Docstring: %s", Configuration.__doc__)
         # Подключаемся к Exchange-аккаунту на основе данных из конфигурационного файла
         self.my_acc_exch = Account(primary_smtp_address=exch_usersmtpaddr, config=self.conf_exchange,
                                    credentials=self.credents_project, autodiscover=False)
+        logger.info("Параметры Account из Docstring: %s", Account.__doc__)
         # Определяемся с Тайм-зонами
-        # timezones = list(self.my_acc_exch.protocol.get_timezones(return_full_timezone_data=True))
-        # print('pwp_exch_model -> __init__() -> Список timezones: ', timezones)
+        # logging.info(f'default_timezone : {self.my_acc_exch.default_timezone}')
+        d = EWSDateTime(2024, 10, 28, tzinfo=EWSTimeZone.localzone())
+        # current_tzinfo = EWSTimeZone.localzone()
+        # logger.info('Текущая тайм-зона: %s ', current_tzinfo)
+        logger.info('Текущая тайм-зона по datetime: %s ', datetime(*d.timetuple()[:6], tzinfo=d.tzinfo))
         # Инициируем папки для сортировки входящих сообщений
         # print("pwp_exch_model --> Подключились к аккаунту:", self.my_acc_exch)
         # print("pwp_exch_model --> exch_serverurl:", exch_serverurl)
@@ -120,6 +179,7 @@ class pwp_exch_model:
                     to_recipients=recipients, cc_recipients=item.cc_recipients)
         m.send_and_save()
 
+    @timer
     def count_inbox_msg(self):
         # 0 - Total, 1 - Unread, 2 - Suppl, 3 - mtst, 4 - other, 5 - Komus
         print("pwp_exch_model --> count_inbox_msg --> Обновляем папку Inbox")
