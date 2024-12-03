@@ -36,27 +36,27 @@ from .exch_lib_model import pwp_exch_model
 
 
 # Здесь определяем Functional Based View - отображение на основе функций!!!
-# def index_view(request: HttpRequest) -> HttpResponse:  # Описываем действия
-#     # def index_view(request: HttpRequest, pk) -> HttpResponse:  # Описываем действия для Functional view
-#     # conf_logging(level=logging.DEBUG)
-#     ews_items = ewsitem.objects.all()[:3]  # свойство objects есть в БД сортировкой по id. Выводим 3 элемента
-#     # ews_items = ewsitem.objects.get(pk=pk)  # действия для Functional view -> если не нашли - делаем, исключение
-#     # ews_items = ewsitem.objects.order_by("id").all()  # свойство objects есть в БД сортировкой по id
-#     data = {'title': 'EWS List Приложение!!!'}
-#     return render(
-#         request,
-#         template_name="ews_list/index.html",
-#         context={"ews_items": ews_items},  # Обращение в БД за всеми элементами
-#     )
-#
+def index_view(request: HttpRequest) -> HttpResponse:  # Описываем действия
+    # def index_view(request: HttpRequest, pk) -> HttpResponse:  # Описываем действия для Functional view
+    # conf_logging(level=logging.DEBUG)
+    ews_items = ewsitem.objects.all()[:3]  # свойство objects есть в БД сортировкой по id. Выводим 3 элемента
+    # ews_items = ewsitem.objects.get(pk=pk)  # действия для Functional view -> если не нашли - делаем, исключение
+    # ews_items = ewsitem.objects.order_by("id").all()  # свойство objects есть в БД сортировкой по id
+    data = {'title': 'EWS List Приложение!!!'}
+    return render(
+        request,
+        template_name="ews_list/index.html",
+        context={"ews_items": ews_items},  # Обращение в БД за всеми элементами
+    )
 
-# class ewsitemView(View):
-#     def get(self):
-#         ews_items = ewsitem.objects.all()[:3]
-#         return HttpResponse(
-#             template_name="ews_list/ewsitem_detail.html",
-#             context={"ews_items": ews_items},  # Обращение в БД за всеми элементами
-#         )
+
+class ewsitemView(View):
+    def get(self):
+        ews_items = ewsitem.objects.all()[:3]
+        return HttpResponse(
+            template_name="ews_list/ewsitem_detail.html",
+            context={"ews_items": ews_items},  # Обращение в БД за всеми элементами
+        )
 
 
 class ewsitemDetailView(DetailView):

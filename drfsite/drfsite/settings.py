@@ -104,7 +104,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Documentation: https://django-auth-exchange.readthedocs.io
-# Auth Exchange is a reusable Django app that allows you to authenticate users against an Exchange/Office365
+# Auth Exchange is a reusable Django app that allows you to authenticate users against an Exchange/Office 365
 # server (using exchangelib).
 AUTHENTICATION_BACKENDS = [
     'django_auth_exchange.backends.ExchangeAuthBackend',
