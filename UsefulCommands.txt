@@ -20,6 +20,8 @@ python manage.py migrate
 python manage.py makemigrations
 python manage.py createsuperuser
 
+python manage.py shell_plus  - запуск отладочного shell
+
 
 django-admin startproject todo_manager
 python manage.py runserver

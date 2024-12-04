@@ -1,5 +1,5 @@
 from django import forms
-from ews_list.models import ewsitem
+from ews_list.models import ewsitem, Category
 
 
 # Создаем класс формы для модели ewsitem
@@ -13,13 +13,17 @@ class ewsitemCreateForm(forms.ModelForm):
         # done = models.BooleanField(default=False)  # Обработано
         # cat = models.ForeignKey('Category', on_delete=models.PROTECT, null=True)
         fields = ("email_title", "sender", "done", "cat")
-        # Здесь будет переопределение полей из Exchangelib
-        email_title = forms.CharField(
-            max_length=250,
-            widget=forms.TextInput()
+        cat = forms.ModelChoiceField(
+            queryset=Category.objects.all(),
+            label="Category",
+            empty_label="Категория",
         )
+        # Здесь будет переопределение полей из Exchangelib
+        email_title = forms.CharField(max_length=250, widget=forms.TextInput())
+        # empty_label = {"cat": "Категория не задана"}
         help_texts = {
             "email_title": "Тема самого письма",
+            "cat": "Выберите категорию",
         }
 
 

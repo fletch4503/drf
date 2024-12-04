@@ -2,9 +2,11 @@ from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render
 from django.views.generic import (
     ListView,
-    DetailView, CreateView,
+    DetailView,
+    CreateView,
 )
 from rest_framework import generics
+
 # CreateAPIView – создание данных по POST-запросу;
 # ListAPIView – чтение списка данных по GET-запросу;
 # RetrieveAPIView – чтение конкретных данных (записи) по GET-запросу;
@@ -18,6 +20,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Women
 from .forms import WomenForm
+
 # from django.forms.models import model_to_dict
 from .serializers import WomenSerializer
 
@@ -30,12 +33,16 @@ def women_index(request: HttpRequest) -> HttpResponse:  # Описываем д�
         request,
         template_name="index.html",
         # template_name="women/index.html",
-        context={"women": w_items},  # Передача объектов классов --> Обращение в БД за всеми элементами
+        context={
+            "women": w_items
+        },  # Передача объектов классов --> Обращение в БД за всеми элементами
     )
     # return HttpResponse("Страница приложения women.")
 
 
-def postwoman(request: HttpRequest) -> HttpResponse:  # Функция для отправки данных в форму
+def postwoman(
+    request: HttpRequest,
+) -> HttpResponse:  # Функция для отправки данных в форму
     # получаем из данных запроса POST отправленные через форму данные
     title = request.POST.get("title", "Undefined")
     content = request.POST.get("content", "Undefined")
@@ -71,22 +78,30 @@ def top(request):
     return HttpResponse("Наиболее популярные актрисы")
 
 
-class CreateWomenView(CreateView):  # ListView - готовые объекты для отображения из django.views.generic
+class CreateWomenView(
+    CreateView
+):  # ListView - готовые объекты для отображения из django.views.generic
     model = Women
     form_class = WomenForm
     # fields = '__all__'
     template_name = "women/women_form.html"
 
 
-class WomenListView(ListView):  # ListView - готовые объекты для отображения из django.views.generic
+class WomenListView(
+    ListView
+):  # ListView - готовые объекты для отображения из django.views.generic
     model = Women
 
 
-class WomenDetailView(DetailView):  # делаем свой класс на основе TemplateView. Детальный вид
+class WomenDetailView(
+    DetailView
+):  # делаем свой класс на основе TemplateView. Детальный вид
     model = Women
 
 
-class WomenListIndexView(ListView):  # делаем свой класс на основе TemplateView. Выводим список
+class WomenListIndexView(
+    ListView
+):  # делаем свой класс на основе TemplateView. Выводим список
     template_name = "women/index.html"
     queryset = Women.objects.all()
 
@@ -100,24 +115,27 @@ class WomenAPIList(generics.ListCreateAPIView):
 # КЛАСС для отображения содержимого БД или внесения изменений в БД по REST_FRAMEWORK
 class WomenAPIView(APIView):  # отображение на основе КЛАССОВ по REST_FRAMEWORK!!!
 
-    def get(self, request):
+    @staticmethod
+    def get(request):
         w = Women.objects.all()
-        return Response({'posts': WomenSerializer(w, many=True).data})
+        return Response({"posts": WomenSerializer(w, many=True).data})
 
-    def post(self, request):
+    @staticmethod
+    def post(request):
         # serializer = WomenSerializer(data=request.data)
         # serializer.is_valid(raise_exception=True)
         # serializer.save()
         post_new = Women.objects.create(
-            title=request.data['title'],
-            content=request.data['content'],
-            cat_id=request.data['cat_id']
+            title=request.data["title"],
+            content=request.data["content"],
+            cat_id=request.data["cat_id"],
         )
 
-        return Response({'post': WomenSerializer(post_new).data})
+        return Response({"post": WomenSerializer(post_new).data})
         # return Response({'post': serializer.data})
 
-    def put(self, request, *args, **kwargs):
+    @staticmethod
+    def put(request, *args, **kwargs):
         pk = kwargs.get("pk", None)
         if not pk:
             return Response({"error": "Method PUT not allowed"})

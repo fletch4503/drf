@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "ews_list.apps.EwsListConfig",
     "rest_framework",
     "debug_toolbar",
+    "django_extensions",
 ]
 
 MIDDLEWARE = [
