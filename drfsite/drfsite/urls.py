@@ -28,16 +28,25 @@ from women.views import *
 
 
 urlpatterns = [
-    path("", TemplateView.as_view(template_name="index.html"), name="index"),  # Class-based views
+    path(
+        "", TemplateView.as_view(template_name="index.html"), name="index"
+    ),  # Class-based views
     path("about/", TemplateView.as_view(template_name="about.html"), name="About"),
-    path('admin/', admin.site.urls),
-    path('women/', include("women.urls")),
+    path("admin/", admin.site.urls),
+    path("women/", include("women.urls")),
     path("ews/", include("ews_list.urls")),  # Including EWS URLconf
     # path('api/v1/womenlist/', WomenAPIView.as_view()),
-    path('api/v1/womenlist/', WomenAPIList.as_view()),
-    path('api/v1/ewslist/', ewsAPIList.as_view()),
+    path("api/v1/womenlist/", WomenAPIList.as_view()),
+    path("api/v1/ewslist/", ewsAPIList.as_view()),
     # url(r'^favicon\.ico$', RedirectView.as_view(url=static('favicon.ico'))),
     # эта строка решит проблему!
     # path('api/v1/womenlist/<int:pk>/', WomenAPIView.as_view()),
 ] + static_urls(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 # ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+if settings.DEBUG:
+    import debug_toolbar
+
+    urlpatterns = [
+        path("__debug__/", include(debug_toolbar.urls)),
+    ] + urlpatterns

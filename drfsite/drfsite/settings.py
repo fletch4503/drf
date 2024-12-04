@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-$7keb2q!=rvz1y4+^2vn@3($n%r%&=50ixzzl#$4=359j7fedt
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+# ALLOWED_HOSTS = ["127.0.0.1"]
 
 
 # Application definition
@@ -38,9 +38,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'women.apps.WomenConfig',
-    'ews_list.apps.EwsListConfig',
-    'rest_framework',
+    "women.apps.WomenConfig",
+    "ews_list.apps.EwsListConfig",
+    "rest_framework",
+    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
@@ -51,6 +52,11 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+]
+
+INTERNAL_IPS = [
+    "127.0.0.1",
 ]
 
 ROOT_URLCONF = "drfsite.urls"
@@ -58,7 +64,7 @@ ROOT_URLCONF = "drfsite.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / 'templates'],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -107,13 +113,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # Auth Exchange is a reusable Django app that allows you to authenticate users against an Exchange/Office 365
 # server (using exchangelib).
 AUTHENTICATION_BACKENDS = [
-    'django_auth_exchange.backends.ExchangeAuthBackend',
-    'django.contrib.auth.backends.ModelBackend',
+    "django_auth_exchange.backends.ExchangeAuthBackend",
+    "django.contrib.auth.backends.ModelBackend",
 ]
 
 # Configure at least one domain
 AUTH_EXCHANGE_DOMAIN_SERVERS = {
-    'example.org': 'autodiscover',
+    "example.org": "autodiscover",
 }
 
 # AUTH_EXCHANGE_CREATE_UNKNOWN_USER (default: True)
