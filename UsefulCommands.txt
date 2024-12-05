@@ -5,6 +5,9 @@ python -m venv venv
 
 
 cd drfsite
+docker compose up -d pg                                                 - Install pg db in Docker
+docker compose down                                                     - clean all datas
+docker compose ps                                                       - check state Docker
 python manage.py runserver
 
 pip install -r requirements.txt
@@ -22,7 +25,7 @@ python manage.py createsuperuser
 ------------------------------------------- Работа с БД ---------------------------------------------------------------
 python manage.py shell_plus  - запуск отладочного shell
 python manage.py dumpdata --exclude contenttypes --output db.json               - создаем дамп базы данных в db.json
-python -Xutf8 manage.py dumpdata --exclude contenttypes --output db.json        - то же, но в кодировке utf8
+python -Xutf8 manage.py dumpdata --exclude contenttypes --output dbdata.json    - то же, но в кодировке utf8
                                  --exclude auth.permission --exclude admin.logentry    - исключаем логи и права доступа
 python manage.py loaddata db.json                                               - восстановить дамп
 python -Xutf8 manage.py loaddata db.json                                        - восстановить дамп в кодировке utf8
@@ -48,8 +51,6 @@ new db.sqlite3 will generates automatically
 git remote
 git remote remove origin
 git remote add origin https://github.com/fletch4503/pwp_FastAPI.git     - add remote git
-docker compose up -d pg                                                 - Install pg db in Docker
-docker compose ps                                                       - check state Docker
 poetry install                                                      - install packages in order to pyproject.toml file
 python -m venv .venv                                                - install virtual env
 .venv/scripts/activate                                              - activate virtual env
