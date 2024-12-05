@@ -12,6 +12,16 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 
+# import pwp_settings as psettings  # Импортируем модуль с настройками всех параметров
+from ews_list.pwp_settings import (
+    userid,
+    dbpass,
+    db_url,
+    dbname,
+    dbhost,
+    dbport,
+)
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -84,10 +94,21 @@ WSGI_APPLICATION = "drfsite.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": dbname,
+        "USER": userid,
+        "PASSWORD": dbpass,
+        "HOST": dbhost,
+        "PORT": dbport,
     }
 }
 
@@ -108,6 +129,10 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
+]
+
+PASSWORD_HASHERS = [
+    "django.contrib.auth.hashers.MD5PasswordHasher",
 ]
 
 # Documentation: https://django-auth-exchange.readthedocs.io
